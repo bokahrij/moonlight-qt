@@ -1,0 +1,29 @@
+name: Build Flatpak
+
+on:
+  push:
+    branches:
+      - stretch_presentation
+  pull_request:
+    branches:
+      - stretch_presentation
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Flatpak
+      uses: flatpak/flatpak-builder-action@v5
+      with:
+        repo-name: flatpak-repo
+        manifest-path: io.github.moonlight_stream.Moonlight.yml
+
+    - name: Upload Flatpak Bundle
+      uses: actions/upload-artifact@v3
+      with:
+        name: Moonlight-Qt-Flatpak
+        path: flatpak-repo/*.flatpak
